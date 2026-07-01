@@ -1,4 +1,4 @@
--- piggers
+-- Modified by 2zvh
 local InputService = game:GetService('UserInputService');
 local TextService = game:GetService('TextService');
 local CoreGui = game:GetService('CoreGui');
@@ -3848,17 +3848,16 @@ function Library:CreateWindow(...)
                 CursorOutline:Remove();
             end);
         end;
-        if Library.UseBlur then
-            if Library.Toggled then
-                Library.BlurEffect.Enabled = true
-                Library.BlurEffect.Size = Library.BlurSize
-            else
-                Library.BlurEffect.Size = 0
-                Library.BlurEffect.Enabled = false
-            end
+        if Library.UseBlur and Library.Toggled then
+            Library.BlurEffect.Enabled = true
+            TweenService:Create(Library.BlurEffect, TweenInfo.new(0.25, Enum.EasingStyle.Quad), { Size = Library.BlurSize }):Play()
         else
-            Library.BlurEffect.Size = 0
-            Library.BlurEffect.Enabled = false
+            TweenService:Create(Library.BlurEffect, TweenInfo.new(0.25, Enum.EasingStyle.Quad), { Size = 0 }):Play()
+            task.delay(0.25, function()
+                if not (Library.UseBlur and Library.Toggled) then
+                    Library.BlurEffect.Enabled = false
+                end
+            end)
         end
     end
 
